@@ -1,17 +1,31 @@
-export const SearchBar = () => {
+import React from 'react';
+import './styles.css';
+import { useFormik } from 'formik';
+
+export const SearchBar = ({ onSearch }) => {
+  const formik = useFormik({
+    initialValues: { searchQuery: '' },
+    onSubmit: (values, actions) => {
+      onSearch(values.searchQuery);
+      actions.resetForm();
+    },
+  });
   return (
-    <header class="searchbar">
-      <form class="form">
-        <button type="submit" class="button">
-          <span class="button-label">Search</span>
+    <header className="searchbar">
+      <form onSubmit={formik.handleSubmit} className="form">
+        <button type="submit" className="button">
+          <span className="button-label">Search</span>
         </button>
 
         <input
-          class="input"
+          className="input"
+          name="searchQuery"
           type="text"
-          autocomplete="off"
-          autofocus
+          autoComplete="off"
+          autoFocus
           placeholder="Search images and photos"
+          onChange={formik.handleChange}
+          value={formik.values.searchQuery}
         />
       </form>
     </header>
