@@ -1,9 +1,9 @@
-import { MagnifyingGlass } from 'react-loader-spinner';
+import { ColorRing } from 'react-loader-spinner';
 import css from './Loader.module.css';
 
 export const Spinner = () => {
   return (
-    <MagnifyingGlass
+    <ColorRing
       visible={true}
       height="80"
       width="80"
