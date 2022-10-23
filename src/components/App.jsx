@@ -1,10 +1,9 @@
-import axios from 'axios';
 import { SearchBar } from './SearchBar/SearchBar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Component } from 'react';
 import { Button } from './Button/Button';
 import { Spinner } from './Loader/Loader';
-import { API_KEY } from './API/API';
+import { apiService } from './API/apiService';
 import css from './App.module.css';
 
 export class App extends Component {
@@ -35,26 +34,19 @@ export class App extends Component {
       prevState.query !== this.state.query ||
       prevState.page !== this.state.page
     ) {
-      try {
-        this.setState({ isLoading: true });
-        const response = await axios.get('https://pixabay.com/api/', {
-          params: {
-            key: API_KEY,
-            q: this.state.query,
-            per_page: 12,
-            page: this.state.page,
-          },
-        });
-        this.setState({
-          isLoading: false,
-          galleryItems: [...prevState.galleryItems, ...response.data.hits],
-          totalImages: response.data.totalHits,
-          showMore: true,
-        });
+      this.setState({ isLoading: true });
+      const response = await apiService(this.state.query, this.state.page);
+      console.log(response);
+      this.setState({
+        isLoading: false,
+        galleryItems: [...prevState.galleryItems, ...response.data.hits],
+        totalImages: response.data.totalHits,
+        showMore: true,
+
         // if (this.state.totalImages - this.state.galleryItems.length === 0) {
         //   this.setState({ showMore: false });
         // }
-      } catch (error) {}
+      });
     }
   }
 
