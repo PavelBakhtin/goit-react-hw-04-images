@@ -21,7 +21,7 @@ export class App extends Component {
     }));
   };
 
-  searchImages = async ({ userQuery }) => {
+  searchImages = ({ userQuery }) => {
     this.setState({
       galleryItems: [],
       query: userQuery,
@@ -29,23 +29,29 @@ export class App extends Component {
     });
   };
   async componentDidUpdate(_, prevState) {
-    if (
-      prevState.query !== this.state.query ||
-      prevState.page !== this.state.page
-    ) {
+    const { query, page } = this.state;
+    if (prevState.page !== page) {
       this.setState({ isLoading: true });
-      const response = await apiService(this.state.query, this.state.page);
-      console.log(response);
+      const response = await apiService(query, page);
       this.setState({
         isLoading: false,
         galleryItems: [...prevState.galleryItems, ...response.data.hits],
         totalImages: response.data.totalHits,
         showMore: true,
-
-        // if (this.state.totalImages - this.state.galleryItems.length === 0) {
-        //   this.setState({ showMore: false });
-        // }
       });
+    }
+    if (prevState.query !== query) {
+      this.setState({ isLoading: true });
+      const response = await apiService(query, page);
+      this.setState({
+        isLoading: false,
+        galleryItems: [...response.data.hits],
+        totalImages: response.data.totalHits,
+        showMore: true,
+      });
+      if (this.state.totalImages === this.state.galleryItems.length) {
+        this.setState({ showMore: false });
+      }
     }
   }
 

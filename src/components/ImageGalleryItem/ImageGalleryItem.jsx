@@ -35,7 +35,7 @@ export class GalleryImageItem extends Component {
   }
 }
 GalleryImageItem.propTypes = {
-  img: PropTypes.string.isRequired,
-  alt: PropTypes.string.isRequired,
-  largeImg: PropTypes.string.isRequired,
+  img: PropTypes.string,
+  alt: PropTypes.string,
+  largeImg: PropTypes.string,
 };
