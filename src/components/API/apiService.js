@@ -10,7 +10,7 @@ export const apiService = async (query, page) => {
         page: page,
       },
     });
-    console.log(response);
+
     return response;
   } catch (error) {}
 };

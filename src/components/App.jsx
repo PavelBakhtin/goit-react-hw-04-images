@@ -27,7 +27,6 @@ export class App extends Component {
       query: userQuery,
       page: 1,
     });
-    console.log(this.state.query);
   };
   async componentDidUpdate(_, prevState) {
     if (
