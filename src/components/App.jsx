@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { SearchBar } from './SearchBar/SearchBar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Button } from './Button/Button';
@@ -12,6 +12,7 @@ export const App = () => {
   const [page, setPage] = useState(1);
   const [showMore, setShowMore] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [imagesTotal, setImagesTotal] = useState(0);
   const onLoadMore = () => {
     setPage(page => page + 1);
   };
@@ -31,11 +32,7 @@ export const App = () => {
         const response = await apiService(query, page);
         setIsLoading(false);
         setGalleryItems(prevState => [...prevState, ...response.data.hits]);
-        const totalImages = response.data.totalHits;
-        const imagesShown = galleryItems.length;
-        if (totalImages === imagesShown || totalImages < 12) {
-          return setShowMore(false);
-        }
+        setImagesTotal(response.data.totalHits);
         setShowMore(true);
       } catch (error) {
         console.log(error);
@@ -43,7 +40,11 @@ export const App = () => {
     };
     loadImages();
   }, [page, query]);
-
+  useEffect(() => {
+    if (galleryItems.length === imagesTotal || imagesTotal <= 12) {
+      setShowMore(false);
+    }
+  }, [galleryItems.length, imagesTotal]);
   return (
     <div className={css.App}>
       <SearchBar onSearch={searchImages} />

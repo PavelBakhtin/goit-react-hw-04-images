@@ -6,15 +6,15 @@ import { useEffect } from 'react';
 const modalRoot = document.querySelector('#modal-root');
 export const Modal = ({ children, onClose }) => {
   useEffect(() => {
+    const handleKeyDown = e => {
+      if (e.code === 'Escape') {
+        onClose();
+      }
+    };
     window.addEventListener('keydown', handleKeyDown);
     return window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [onClose]);
 
-  const handleKeyDown = e => {
-    if (e.code === 'Escape') {
-      onClose();
-    }
-  };
   const handleBackDropClick = e => {
     if (e.currentTarget === e.target) {
       onClose();
