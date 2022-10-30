@@ -12,5 +12,7 @@ export const apiService = async (query, page) => {
     });
 
     return response;
-  } catch (error) {}
+  } catch (error) {
+    throw error;
+  }
 };
